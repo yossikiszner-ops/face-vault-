@@ -1,0 +1,1 @@
+import"./globals.css";export const metadata={title:"Face Vault",description:"מערכת פרטית לזיהוי פנים"};export default function Layout({children}:{children:React.ReactNode}){return <html lang="he" dir="rtl"><body>{children}</body></html>}

@@ -1,0 +1,2 @@
+import{Redis}from"@upstash/redis";export type Person={id:string;name:string;notes:string;createdAt:number};export type Sample={id:string;personId:string;name:string;embedding:number[];createdAt:number};const redis=Redis.fromEnv();
+export async function people(){return(await redis.get<Person[]>("people"))||[]}export async function samples(){return(await redis.get<Sample[]>("samples"))||[]}export async function savePeople(v:Person[]){await redis.set("people",v)}export async function saveSamples(v:Sample[]){await redis.set("samples",v)}

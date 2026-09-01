@@ -1,0 +1,1 @@
+import{NextResponse}from"next/server";import{authorized}from"@/lib/auth";import{samples}from"@/lib/store";export async function GET(){if(!await authorized())return NextResponse.json({}, {status:401});return NextResponse.json({samples:await samples()})}
