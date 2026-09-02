@@ -1,5 +1,4 @@
 import{Redis}from"@upstash/redis";export type Person={id:string;name:string;notes:string;createdAt:number};export type Sample={id:string;personId:string;name:string;embedding:number[];createdAt:number};
 function findEnv(exact:string,suffix:string){return process.env[exact]||Object.entries(process.env).find(([key,value])=>Boolean(value)&&key.endsWith(suffix)&&!key.includes("READ_ONLY"))?.[1]}
-const url=findEnv("UPSTASH_REDIS_REST_URL","REST_API_URL");const token=findEnv("UPSTASH_REDIS_REST_TOKEN","REST_API_TOKEN");
-if(!url||!token)throw new Error("חיבור מסד הנתונים חסר ב-Vercel");const redis=new Redis({url,token});
-export async function people(){return(await redis.get<Person[]>("people"))||[]}export async function samples(){return(await redis.get<Sample[]>("samples"))||[]}export async function savePeople(v:Person[]){await redis.set("people",v)}export async function saveSamples(v:Sample[]){await redis.set("samples",v)}
+function database(){const url=findEnv("UPSTASH_REDIS_REST_URL","REST_API_URL"),token=findEnv("UPSTASH_REDIS_REST_TOKEN","REST_API_TOKEN");if(!url||!token)throw new Error("חיבור מסד הנתונים חסר ב-Vercel");return new Redis({url,token})}
+export async function people(){return(await database().get<Person[]>("people"))||[]}export async function samples(){return(await database().get<Sample[]>("samples"))||[]}export async function savePeople(v:Person[]){await database().set("people",v)}export async function saveSamples(v:Sample[]){await database().set("samples",v)}
